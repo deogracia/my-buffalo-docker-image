@@ -23,10 +23,13 @@ jobs:
           target: docker-buffalo.pkr.hcl
 
       # Init
-      - name: Validate Template
+      - name: init packer
         uses: hashicorp/packer-github-actions@master
         with:
           command: init
+      # Install docker
+      - name: Install docker
+        run: sudo apt-get install docker -y
           
       # build artifact
       - name: Build Artifact
