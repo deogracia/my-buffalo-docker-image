@@ -14,13 +14,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # validate templates
-      - name: Validate Template
-        run: packer validate docker-buffalo.pkr.hcl
-
       # Init
       - name: init packer
         run: packer init
+
+      # validate templates
+      - name: Validate Template
+        run: packer validate docker-buffalo.pkr.hcl
 
       # build artifact
       - name: Build Artifact
