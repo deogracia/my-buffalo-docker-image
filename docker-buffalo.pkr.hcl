@@ -8,7 +8,7 @@ packer {
 }
 
 variable "buffalo_version" {
-  type = string
+  type    = string
   default = "v0.18.7"
 }
 
@@ -21,7 +21,7 @@ source "docker" "buffalo" {
 }
 
 build {
-  name = "my-buffalo"
+  name = "deogracia/my-buffalo"
   sources = [
     "source.docker.buffalo"
   ]
@@ -33,7 +33,7 @@ build {
   }
 
   post-processor "docker-tag" {
-    repository = "my-buffalo"
-    tags = ["${var.buffalo_version}"]
+    repository = "deogracia/my-buffalo"
+    tags       = ["${var.buffalo_version}"]
   }
 }
