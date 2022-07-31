@@ -16,7 +16,7 @@ jobs:
 
       # Init
       - name: init packer
-        run: packer init
+        run: packer init .
 
       # validate templates
       - name: Validate Template
