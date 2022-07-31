@@ -1,0 +1,39 @@
+packer {
+  required_plugins {
+    docker = {
+      version = ">= 0.0.7"
+      source  = "github.com/hashicorp/docker"
+    }
+  }
+}
+
+variable "buffalo_version" {
+  type = string
+  default = "v0.18.7"
+}
+
+source "docker" "buffalo" {
+  image  = "gobuffalo/buffalo:${var.buffalo_version}"
+  commit = true
+  run_command = [
+    "-d", "-i", "-t", "--entrypoint=/bin/bash", "--", "{{.Image}}"
+  ]
+}
+
+build {
+  name = "my-buffalo"
+  sources = [
+    "source.docker.buffalo"
+  ]
+
+  provisioner "shell" {
+    inline = [
+      "chmod -R 777 \"$GOPATH\""
+    ]
+  }
+
+  post-processor "docker-tag" {
+    repository = "my-buffalo"
+    tags = ["${var.buffalo_version}"]
+  }
+}
