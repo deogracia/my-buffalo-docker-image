@@ -32,13 +32,14 @@ jobs:
 
       # docker login
       - name: Docker login
-        run: docker login --username ${{ secrets.MY_DOCKER_LOGIN }} --password ${{ secrets.MY_DOCKER_PWD }}
+        run: echo "${{ secrets.MY_DOCKER_PWD }}" | docker login --username ${{ secrets.MY_DOCKER_LOGIN }} --password-stdin
 
       # docker push
       - name: docker push
         run: |
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          echo "VERSION=${VERSION}"
 
           docker push deogracia/${VERSION}
 
