@@ -1,3 +1,32 @@
+---
+
+name: Packer - build and tag
+
+on:
+  push:
+
+jobs:
+  packer_build_and_tag:
+    runs-on: ubuntu-latest
+    name: packer build and tag
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Init
+      - name: init packer
+        run: packer init .
+
+      # validate templates
+      - name: Validate Template
+        run: packer validate docker-buffalo.pkr.hcl
+
+      # build artifact
+      - name: Build Artifact
+        run: packer build -color=false -on-error=abort docker-buffalo.pkr.hcl
+        env:
+          PACKER_LOG: 1
 
 ---
 
