@@ -6,9 +6,9 @@ on:
   push:
 
 jobs:
-  packer:
+  packer_build_and_tag:
     runs-on: ubuntu-latest
-    name: packer
+    name: packer build and tag
 
     steps:
       - name: Checkout Repository
