@@ -1,21 +1,24 @@
+
 ---
 
-name: Packer - build and tag
+name: Packer - build, tag, push
 
 on:
   push:
+    tags:
+      - v*
 
 jobs:
-  packer_build_and_tag:
+  packer_build_tag_and_publish:
     runs-on: ubuntu-latest
-    name: packer build and tag
+    name: packer build tag and publish
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       # Init
-      - name: init packer
+      - name: Init packer
         run: packer init .
 
       # validate templates
@@ -28,4 +31,18 @@ jobs:
         env:
           PACKER_LOG: 1
 
-      # additional steps to process artifacts
+      # docker login
+      - name: Docker login
+        run: docker login --username ${{ secrets.MY_DOCKER_LOGIN }} --password ${{ secrets.MY_DOCKER_PWD }}
+
+      # docker push
+      - name: docker push
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          docker push deogracia/${VERSION}
+
+      # docker logout
+      - name: Docker logout
+        run: docker logout
