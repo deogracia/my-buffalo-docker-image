@@ -1,6 +1,6 @@
 ---
 
-name: Packer
+name: Packer - build and tag
 
 on:
   push:
