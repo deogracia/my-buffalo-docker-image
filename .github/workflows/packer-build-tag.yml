@@ -6,8 +6,6 @@ on:
   push:
     branches-ignore:
       - 'main'
-    tags-ignore:
-      - '**'
 
 jobs:
   packer_build_and_tag:
