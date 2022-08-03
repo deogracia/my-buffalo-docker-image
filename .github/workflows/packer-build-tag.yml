@@ -4,7 +4,6 @@ name: Packer - build and tag
 
 on:
   push:
-  push:
     tags:
       - "!*"
 
