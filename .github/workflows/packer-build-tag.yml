@@ -4,10 +4,10 @@ name: Packer - build and tag
 
 on:
   push:
-    branches:
-      - "!main"
-    tags:
-      - "!**"
+    branches-ignore:
+      - main
+    tags-ignore:
+      - "**"
 
 jobs:
   packer_build_and_tag:
