@@ -5,9 +5,9 @@ name: Packer - build and tag
 on:
   push:
     branches-ignore:
-      - main
+      - 'main'
     tags-ignore:
-      - "**"
+      - '**'
 
 jobs:
   packer_build_and_tag:
