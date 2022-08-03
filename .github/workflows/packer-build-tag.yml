@@ -4,6 +4,9 @@ name: Packer - build and tag
 
 on:
   push:
+  push:
+    tags:
+      - "!*"
 
 jobs:
   packer_build_and_tag:

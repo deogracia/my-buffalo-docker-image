@@ -12,6 +12,11 @@ variable "buffalo_version" {
   default = "v0.18.7"
 }
 
+variable "docker_image_version" {
+  type    = string
+  default = "default_value"
+}
+
 source "docker" "buffalo" {
   image  = "gobuffalo/buffalo:${var.buffalo_version}"
   commit = true
@@ -34,6 +39,6 @@ build {
 
   post-processor "docker-tag" {
     repository = "deogracia/my-buffalo"
-    tags       = ["${var.buffalo_version}"]
+    tags       = ["${var.docker_image_version}"]
   }
 }

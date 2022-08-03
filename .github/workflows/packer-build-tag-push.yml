@@ -26,7 +26,12 @@ jobs:
 
       # build artifact
       - name: Build Artifact
-        run: packer build -color=false -on-error=abort docker-buffalo.pkr.hcl
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          echo "VERSION=${VERSION}"
+
+          packer build -color=false -on-error=abort -var "docker_image_version=${VERSION}" docker-buffalo.pkr.hcl
         env:
           PACKER_LOG: 1
 
