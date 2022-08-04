@@ -31,13 +31,18 @@ jobs:
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           echo "VERSION=${VERSION}"
 
-          packer build -color=false -on-error=abort -var "docker_image_version=${VERSION}" docker-buffalo.pkr.hcl
+          packer build -color=false \
+                 -on-error=abort \
+                 -var "docker_image_version=${VERSION}" \
+                  docker-buffalo.pkr.hcl
         env:
           PACKER_LOG: 1
 
       # docker login
       - name: Docker login
-        run: echo "${{ secrets.MY_DOCKER_PWD }}" | docker login --username ${{ secrets.MY_DOCKER_LOGIN }} --password-stdin
+        run: echo "${{ secrets.MY_DOCKER_PWD }}" | docker login \
+              --username ${{ secrets.MY_DOCKER_LOGIN }} \
+              --password-stdin
 
       # docker push
       - name: docker push
