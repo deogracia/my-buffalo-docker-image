@@ -28,7 +28,7 @@ jobs:
         run: packer validate docker-buffalo.pkr.hcl
 
       # build artifact
-      - name: Build Artifact
+      - name: Build and docker push artifact
         run: |
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
@@ -38,24 +38,13 @@ jobs:
                  -on-error=abort \
                  -var "docker_image_version=${VERSION}" \
                   docker-buffalo.pkr.hcl
-        env:
-          PACKER_LOG: 1
 
-      # docker login
-      - name: Docker login
-        run: echo "${{ secrets.MY_DOCKER_PWD }}" | docker login \
-              --username ${{ secrets.MY_DOCKER_LOGIN }} \
-              --password-stdin
-
-      # docker push
-      - name: docker push
-        run: |
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          echo "VERSION=${VERSION}"
+          echo "${{ secrets.MY_DOCKER_PWD }}" | docker login \
+            --username ${{ secrets.MY_DOCKER_LOGIN }} \
+            --password-stdin
 
           docker push deogracia/${VERSION}
 
-      # docker logout
-      - name: Docker logout
-        run: docker logout
+          docker logout
+        env:
+          PACKER_LOG: 1
