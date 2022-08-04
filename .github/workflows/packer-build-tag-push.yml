@@ -43,7 +43,7 @@ jobs:
             --username ${{ secrets.MY_DOCKER_LOGIN }} \
             --password-stdin
 
-          docker push deogracia/${VERSION}
+          docker push "deogracia/my-buffalo-docker:${VERSION}"
 
           docker logout
         env:
