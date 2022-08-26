@@ -20,8 +20,9 @@ variable "docker_image_version" {
 source "docker" "buffalo" {
   image  = "gobuffalo/buffalo:${var.buffalo_version}"
   commit = true
-  run_command = [
-    "-d", "-i", "-t", "--entrypoint=/bin/bash", "--", "{{.Image}}"
+  changes = [
+    "ENTRYPOINT [\"/usr/local/bin/docker-entrypoint.bash\"]",
+    "CMD [\"buffalo\"]"
   ]
 }
 
@@ -31,10 +32,17 @@ build {
     "source.docker.buffalo"
   ]
 
+  provisioner "file" {
+    source      = "scripts/docker-entrypoint.bash"
+    destination = "/usr/local/bin/docker-entrypoint.bash"
+  }
+
   provisioner "shell" {
-    inline = [
-      "chmod -R 777 \"$GOPATH\""
-    ]
+    inline = ["chmod +x /usr/local/bin/docker-entrypoint.bash"]
+  }
+
+  provisioner "shell" {
+    scripts = ["scripts/install_gosu.bash"]
   }
 
   post-processor "docker-tag" {
