@@ -5,12 +5,22 @@ set -euxo pipefail
 MY_UID=${USER_ID?[ERROR] USER_ID env variable must be defined.}
 MY_GID=${GROUP_ID?[ERROR] GROUP_ID env variable must be defined.}
 
-chown -R "${MY_UID}":"${MY_GID}" /go
+GROUP=buffalo
+USER="${GROUP}"
+USER_DIR=/home/"${USER}"
+
+groupadd --non-unique --gid "${MY_GID}" "${GROUP}"
+useradd  --non-unique --uid "${MY_UID}" --gid "${MY_GID}" "${USER}"
+mkdir -p "${USER_DIR}" && \
+chown -R "${USER}":"${GROUP}" "${USER_DIR}"
+
+
+chown -R "${USER}":"${GROUP}" /go
 
 echo "$@"
 
 if [[ $# -eq 0 ]] ;then
-  gosu "${MY_UID}":"${MY_GID}" buffalo
+  gosu "${USER}":"${GROUP}" buffalo
 else
-  gosu "${MY_UID}":"${MY_GID}" "${@}"
+  gosu "${USER}":"${GROUP}" "${@}"
 fi

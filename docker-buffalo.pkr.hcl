@@ -42,6 +42,10 @@ build {
   }
 
   provisioner "shell" {
+    scripts = ["scripts/install_dependancies.bash"]
+  }
+
+  provisioner "shell" {
     scripts = ["scripts/install_gosu.bash"]
   }
 
