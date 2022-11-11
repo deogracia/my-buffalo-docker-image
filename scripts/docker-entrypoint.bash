@@ -9,8 +9,8 @@ GROUP=buffalo
 USER="${GROUP}"
 USER_DIR=/home/"${USER}"
 
-groupadd --non-unique --gid "${MY_GID}" "${GROUP}"
-useradd  --non-unique --uid "${MY_UID}" --gid "${MY_GID}" "${USER}"
+groupadd --non-unique --gid "${MY_GID}" --force "${GROUP}"
+id -u "${USER}" &> /dev/null || useradd  --non-unique --uid "${MY_UID}" --gid "${MY_GID}" "${USER}"
 mkdir -p "${USER_DIR}" && \
 chown -R "${USER}":"${GROUP}" "${USER_DIR}"
 
