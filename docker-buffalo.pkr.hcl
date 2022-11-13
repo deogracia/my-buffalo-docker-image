@@ -49,6 +49,13 @@ build {
     scripts = ["scripts/install_gosu.bash"]
   }
 
+  provisioner "shell" {
+    inline = [
+      "cd /tmp; wget https://github.com/gobuffalo/cli/releases/download/v0.18.8/buffalo_0.18.8_Linux_x86_64.tar.gz",
+      "cd /tmp; tar xzf buffalo_0.18.8_Linux_x86_64.tar.gz && chmod +x buffalo && mv -f buffalo /go/bin",
+    ]
+  }
+
   post-processor "docker-tag" {
     repository = "deogracia/my-buffalo"
     tags       = ["${var.docker_image_version}"]
