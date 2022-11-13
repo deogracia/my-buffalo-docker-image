@@ -9,7 +9,7 @@ packer {
 
 variable "buffalo_version" {
   type    = string
-  default = "v0.18.7"
+  default = "v0.18.8"
 }
 
 variable "docker_image_version" {
